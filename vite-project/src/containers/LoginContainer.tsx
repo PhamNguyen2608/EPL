@@ -1,9 +1,11 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Formik, FormikProps, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import LoginComponent from '../component/LoginComponent';
-import authService from '../api/authSevice';
-import axios, {AxiosError} from 'axios';
+import { login } from '../store/slices/authSlice';
+import { AppDispatch } from '../store/index';  // Import AppDispatch
+
 interface FormValues {
   email: string;
   password: string;
@@ -16,26 +18,28 @@ const validationSchema = Yup.object().shape({
 
 const LoginContainer: React.FC = () => {
   const [loading, setLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();  
 
   const handleLogin = async (
     values: FormValues,
     formikHelpers: FormikHelpers<FormValues>
   ) => {
     setLoading(true);
-    console.log("Dữ liệu được gửi đi",values)
+    setErrorMessage(null); 
+
     try {
-      const response = await authService.login(values);
-      console.log(response);
-      // Handle token or perform other actions with the response
-    } catch (error) {
-      console.log(error)
-      if (axios.isAxiosError(error)) {
-        const axiosError: AxiosError = error; // Gán kiểu
-        console.error('Có lỗi xảy ra:', axiosError.response?.data);
-      } else {
-        console.error('Có lỗi xảy ra:', error);
+      const action = login(values);
+      const resultAction = await dispatch(action);
+      
+      if (login.fulfilled.match(resultAction)) {
+        console.log('Login thành công:', resultAction.payload);
       }
+    } catch (error) {
+      console.error('Có lỗi xảy ra:', error);
+      setErrorMessage('Đăng nhập không thành công. Vui lòng thử lại.');
     }
+
     setLoading(false);
     formikHelpers.setSubmitting(false);
   };
@@ -47,10 +51,11 @@ const LoginContainer: React.FC = () => {
       onSubmit={handleLogin}
     >
       {(formikProps: FormikProps<FormValues>) => (
-        <LoginComponent loading={loading} formikProps={formikProps} />
+        <LoginComponent loading={loading} formikProps={formikProps} errorMessage={errorMessage} />
       )}
     </Formik>
   );
 };
+
 
 export default LoginContainer;
