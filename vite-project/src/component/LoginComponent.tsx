@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 
 
-const LoginComponent: React.FC<Props> = ({ loading, formikProps }) => {
+const LoginComponent: React.FC<Props> = ({ loading, formikProps,errorMessage  }) => {
+  console.log('errorMessage: ', errorMessage);
   return (
     <section className="h-screen flex items-center justify-center bg-gray-100">
       <div className="flex flex-wrap items-center justify-center lg:justify-between w-full">
@@ -54,7 +55,8 @@ const LoginComponent: React.FC<Props> = ({ loading, formikProps }) => {
         <div className="text-red-500 text-sm mt-1">{formikProps.errors.password}</div>
       ) : null}
     </div>
-
+   
+    {errorMessage && <div className="text-red-500 text-sm">{errorMessage}</div>}
     {/* Login Button */}
     <div className="text-center mt-4 flex flex-col items-center">
   <button 
