@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* styles.css */
+.grid-rows-layout {
+    grid-template-rows: auto 1fr;
+  }
+  

@@ -12,7 +12,8 @@
   "dependencies": {
     "2": "^3.0.0",
     "@types/react-router-dom": "^5.3.3",
-    "axios": "^1.5.0",
+    "axios": "^1.5.1",
+    "font-awesome": "^4.7.0",
     "formik": "^2.4.5",
     "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
