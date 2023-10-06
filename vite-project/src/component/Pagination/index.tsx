@@ -30,7 +30,7 @@ const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, setCurrentPa
         </button>
       ))}
 
-      {/* Button for next page */}
+     {/* button next page*/}
       <button
         className="mx-1 px-3 py-2 border rounded-lg text-sm"
         disabled={currentPage === totalPages}

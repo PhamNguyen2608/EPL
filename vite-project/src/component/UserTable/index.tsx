@@ -10,10 +10,10 @@ interface User {
 
 interface UserTableProps {
   users: User[];
-  onShowConfirm: () => void;  // Thêm prop này
-  currentPage: number;  // Thêm prop này
-  totalPages: number;  // Thêm prop này
-  setCurrentPage: (page: number) => void;  // Thêm prop này
+  onShowConfirm: () => void;  
+  currentPage: number;  
+  totalPages: number;  
+  setCurrentPage: (page: number) => void;  
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm }) => {  // Thêm onShowConfirm vào đây

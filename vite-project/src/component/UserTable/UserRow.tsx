@@ -6,6 +6,7 @@ interface UserRowProps {
   email: string;
   role: string;
   onShowConfirm: () => void;
+  
 }
 
 const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm }) => {

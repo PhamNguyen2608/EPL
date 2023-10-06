@@ -6,33 +6,59 @@ import Sidebar from '../../component/NavBar/Sidebar';
 import SidebarButton from '../../component/Button/SideBarButton';  
 import { useDispatch, useSelector } from 'react-redux';
 import { showConfirm } from '../../store/slices/confirmSlice'; 
-import { RootState } from '../../store';  // Import RootState
+import { RootState } from '../../store';
 import ConfirmPopupContainer from "../ConfirmPopupContainer"
 import { useFetchUsers } from '../../hooks/useFetchUsers'; 
 import Pagination from '../../component/Pagination';
+import AddUserForm from '../../component/AddUserForm';
 
+interface UserType{
+  name:string,
+  email:string,
+  role:string
+}
+interface User {
+  id: number;
+  name: string;
+  email:string
+  role: string;
+}
 const UserManagement: React.FC = () => {
   const dispatch = useDispatch();
-  const isPopupVisible = useSelector((state: RootState) => state.confirm.showConfirm);  // Lấy trạng thái từ Redux
-  const { users, loading, error } = useFetchUsers();
-
+  const { users, setUsers, loading, error } = useFetchUsers();
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState(1);  // Add this line
+  const isPopupVisible = useSelector((state: RootState) => state.confirm.showConfirm); 
+  const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); 
   const totalPages = Math.ceil(users.length / 20); 
-  const handleShowConfirm = () => {
-    console.log("Delete")
-    dispatch(showConfirm());  // Dispatch action để hiển thị popup
-  };
-
+  
+  
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  const handleShowConfirm = () => {
+    console.log("Delete")
+    dispatch(showConfirm());  
+  };
+
+
+
+  const handleAddNewUser = (newUser: UserType) => {
+    const newUserWithId: User = { id: users.length + 1, ...newUser }; // Tạo ID mới cho user
+    setUsers([...users, newUserWithId]);
+  }
+  
 
   const handleAddUser = () => {
-    // Logic to add a new user
-    console.log("Add User button clicked");
+    setIsAddUserFormVisible(!isAddUserFormVisible);
   };
+  const handleToggleAddUserForm = () => {
+    setIsAddUserFormVisible(!isAddUserFormVisible);
+  };
+  
+
 
   return (
     <div className="h-screen bg-gray-100 flex flex-col">
@@ -62,6 +88,13 @@ const UserManagement: React.FC = () => {
             <SidebarButton icon="plus" label="Add User" onClick={handleAddUser} />
           </div>        
           </div>
+           {/* Add User Form */}
+        {isAddUserFormVisible && (
+          <div className="w-3/4 mt-4">
+            <AddUserForm handleToggleAddUserForm={handleToggleAddUserForm} handleAddNewUser={handleAddNewUser} />
+
+          </div>
+        )}
           {/* User Table */}
           <div className="w-3/4 mt-4">
         {loading ? (

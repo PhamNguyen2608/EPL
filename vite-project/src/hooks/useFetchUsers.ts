@@ -26,12 +26,12 @@ export const useFetchUsers = () => {
           setError(error);
         }
       } finally {
-        setLoading(false); // Đảm bảo setLoading(false) được gọi
+        setLoading(false); // setLoading(false) được gọi
       }
     };
 
     fetchData();
   }, []);
 
-  return { users, loading, error };
+  return { users, setUsers, loading, error };
 };
