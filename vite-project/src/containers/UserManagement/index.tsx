@@ -37,11 +37,12 @@ const UserManagement: React.FC = () => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
-  const handleShowConfirm = () => {
-    console.log("Delete")
-    dispatch(showConfirm());  
-  };
+  const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
+
+const handleShowConfirm = (id:number) => {
+  setUserIdToDelete(id);
+  dispatch(showConfirm());  
+};
 
 
 
@@ -58,7 +59,10 @@ const UserManagement: React.FC = () => {
     setIsAddUserFormVisible(!isAddUserFormVisible);
   };
   
-
+  const handleUpdateUser = (updatedUser: User) => {
+    // Cập nhật logic ở đây
+    console.log('Updated user:', updatedUser);
+  };
 
   return (
     <div className="h-screen bg-gray-100 flex flex-col">
@@ -103,13 +107,14 @@ const UserManagement: React.FC = () => {
           <p>Error: {error.message}</p>
         ) : (
           <>
-          <UserTable users={filteredUsers} onShowConfirm={handleShowConfirm} currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+          <UserTable handleUpdateUser={handleUpdateUser} users={filteredUsers} onShowConfirm={handleShowConfirm} currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
           <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
         </>
         )}
         
       </div>
-          {isPopupVisible && <ConfirmPopupContainer />}
+          {isPopupVisible && <ConfirmPopupContainer userIdToDelete={userIdToDelete} users={users} setUsers={setUsers} />
+}
         </div>
       </div>
     </div>

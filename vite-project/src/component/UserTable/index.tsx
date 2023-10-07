@@ -10,13 +10,14 @@ interface User {
 
 interface UserTableProps {
   users: User[];
-  onShowConfirm: () => void;  
-  currentPage: number;  
-  totalPages: number;  
-  setCurrentPage: (page: number) => void;  
+  onShowConfirm: (id: number) => void;
+  currentPage: number;  // Thêm prop này
+  totalPages: number;  // Thêm prop này
+  setCurrentPage: (page: number) => void;
+  handleUpdateUser: (updatedUser: User) => void; 
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm }) => {  // Thêm onShowConfirm vào đây
+const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm,handleUpdateUser  }) => {  // Thêm onShowConfirm vào đây
   return (
     <div className="overflow-auto h-[500px] w-[800px] rounded-lg shadow-lg bg-white">
       <table className="min-w-full">
@@ -37,7 +38,8 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm }) => {  // 
               name={user.name} 
               email={user.email} 
               role={user.role} 
-              onShowConfirm={onShowConfirm}  // Truyền hàm vào đây
+              onShowConfirm={onShowConfirm}
+              handleUpdateUser={handleUpdateUser}
             />
           ))}
         </tbody>
