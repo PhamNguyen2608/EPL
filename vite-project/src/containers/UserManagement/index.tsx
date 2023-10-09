@@ -59,10 +59,35 @@ const handleShowConfirm = (id:number) => {
     setIsAddUserFormVisible(!isAddUserFormVisible);
   };
   
+  // const handleUpdateUser = (updatedUser: User) => {
+  //   // Tìm index của user cần cập nhật trong mảng 'users'
+  //   const indexToUpdate = users.findIndex(user => user.id === updatedUser.id);
+  
+  //   // Kiểm tra xem user có được tìm thấy không
+  //   if (indexToUpdate > -1) {
+  //     // Cập nhật thông tin của user
+  //     const updatedUsers = [...users]; // Tạo một bản sao của mảng 'users'
+  //     updatedUsers[indexToUpdate] = updatedUser; // Cập nhật thông tin user
+  
+  //     // Cập nhật lại state 'users' với mảng đã cập nhật
+  //     setUsers(updatedUsers);
+  
+  //     // Ghi log để kiểm tra
+  //     console.log('UI has been updated with the new user information:', updatedUser);
+  //   } else {
+  //     console.log('User with given ID not found.');
+  //   }
+  // };
   const handleUpdateUser = (updatedUser: User) => {
-    // Cập nhật logic ở đây
-    console.log('Updated user:', updatedUser);
+    const updatedUsers = users.map(user => 
+      user.id === updatedUser.id ? updatedUser : user
+    );
+  
+    setUsers(updatedUsers);
+  
+    console.log('UI has been updated with the new user information:', updatedUser);
   };
+  
 
   return (
     <div className="h-screen bg-gray-100 flex flex-col">

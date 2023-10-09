@@ -11,8 +11,8 @@ interface User {
 interface UserTableProps {
   users: User[];
   onShowConfirm: (id: number) => void;
-  currentPage: number;  // Thêm prop này
-  totalPages: number;  // Thêm prop này
+  currentPage: number; 
+  totalPages: number;  
   setCurrentPage: (page: number) => void;
   handleUpdateUser: (updatedUser: User) => void; 
 }

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 
 interface EditUserFormProps {
   user: User;
   handleUpdateUser: (updatedUser: User) => void;
+  closeEditForm: () => void;
 }
 
 interface User {
@@ -13,12 +13,18 @@ interface User {
   role: string;
 }
 
-const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser }) => {
+const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser, closeEditForm }) => {
   const [updatedUser, setUpdatedUser] = useState<User>(user);
+
+  useEffect(() => {
+    console.log("Current state of updatedUser:", updatedUser);
+  }, [updatedUser]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Submitting:", updatedUser); // Log before submitting
     handleUpdateUser(updatedUser);
+    closeEditForm();
   };
 
   return (
@@ -31,7 +37,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser }) =
           id="name"
           type="text"
           value={updatedUser.name}
-          onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
+          onChange={(e) => {
+            console.log("Before updating name:", updatedUser.name); // Log before updating
+            setUpdatedUser({ ...updatedUser, name: e.target.value });
+          }}
           className="p-2 border rounded"
         />
       </div>
@@ -43,7 +52,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser }) =
           id="email"
           type="email"
           value={updatedUser.email}
-          onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+          onChange={(e) => {
+            console.log("Before updating email:", updatedUser.email); // Log before updating
+            setUpdatedUser({ ...updatedUser, email: e.target.value });
+          }}
           className="p-2 border rounded"
         />
       </div>
@@ -54,7 +66,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser }) =
         <select
           id="role"
           value={updatedUser.role}
-          onChange={(e) => setUpdatedUser({ ...updatedUser, role: e.target.value })}
+          onChange={(e) => {
+            console.log("Before updating role:", updatedUser.role); // Log before updating
+            setUpdatedUser({ ...updatedUser, role: e.target.value });
+          }}
           className="p-2 border rounded"
         >
           <option value="admin">Admin</option>

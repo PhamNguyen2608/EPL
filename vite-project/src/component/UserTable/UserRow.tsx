@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import EditUserForm from '../EditForm';  // Import the EditUserForm component
+import EditUserForm from '../EditForm';
 
 interface UserRowProps {
   id: number;
@@ -7,7 +7,7 @@ interface UserRowProps {
   email: string;
   role: string;
   onShowConfirm: (id: number) => void;
-  handleUpdateUser: (updatedUser: User) => void; 
+  handleUpdateUser: (updatedUser: User) => void;
 }
 
 interface User {
@@ -21,15 +21,16 @@ const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm,
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   const toggleEditForm = () => {
-  
     setIsEditFormVisible(!isEditFormVisible);
-  };
-
+    };
+    const closeEditForm = () => {
+      setIsEditFormVisible(false);
+    };
   const user: User = { id, name, email, role };
 
   return (
     <>
-      <tr> 
+      <tr>
         <td className="py-2 px-3 border-b border-gray-200">{id}</td>
         <td className="py-2 px-3 border-b border-gray-200">{name}</td>
         <td className="py-2 px-3 border-b border-gray-200">{email}</td>
@@ -39,7 +40,15 @@ const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm,
           <button className="text-red-500 hover:underline ml-4" onClick={() => onShowConfirm(id)}>Delete</button>
         </td>
       </tr>
-      {isEditFormVisible && <EditUserForm user={user} handleUpdateUser={handleUpdateUser} />}
+      {isEditFormVisible && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50 z-40"></div>
+          <div className="bg-white p-4 rounded z-50 relative">
+            <button className="text-red-500 hover:underline absolute top-0 right-0 mt-2 mr-2" onClick={toggleEditForm}>X</button>
+            <EditUserForm user={user} handleUpdateUser={handleUpdateUser} closeEditForm={closeEditForm} />
+          </div>
+        </div>
+      )}
     </>
   );
 };
