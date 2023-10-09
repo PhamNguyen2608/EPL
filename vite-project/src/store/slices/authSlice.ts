@@ -23,6 +23,7 @@ const authSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
       state.token = action.payload.token;
       setCookie('token', action.payload.token);
+      console.log("Current cookies:", document.cookie);
     });
   },
 });

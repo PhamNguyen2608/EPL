@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 const LoginComponent: React.FC<Props> = ({ loading, formikProps,errorMessage  }) => {
-  console.log('errorMessage: ', errorMessage);
+  
   return (
     <section className="relative h-screen flex items-center justify-center bg-gray-100">
        <video 

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import UserRow from './UserRow'; // Import UserRow component
+import Pagination from '../Pagination';
 
 interface User {
   id: number;
@@ -11,17 +12,32 @@ interface User {
 interface UserTableProps {
   users: User[];
   onShowConfirm: (id: number) => void;
-  currentPage: number; 
-  totalPages: number;  
-  setCurrentPage: (page: number) => void;
-  handleUpdateUser: (updatedUser: User) => void; 
+  handleUpdateUser: (updatedUser: User) => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm,handleUpdateUser  }) => {  // Thêm onShowConfirm vào đây
+const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm, handleUpdateUser }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  useEffect(() => {
+    // Kiểm tra số lượng user trên trang hiện tại
+    const indexOfLastUser = currentPage * itemsPerPage;
+    const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+    if (currentUsers.length === 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [users, currentPage, itemsPerPage]);
+
+  const indexOfLastUser = currentPage * itemsPerPage;
+  const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
   return (
     <div className="overflow-auto h-[500px] w-[800px] rounded-lg shadow-lg bg-white">
       <table className="min-w-full">
-        <thead>
+      <thead>
           <tr>
             <th className="text-left py-2 px-3 border-b border-gray-200">ID</th>
             <th className="text-left py-2 px-3 border-b border-gray-200">Name</th>
@@ -31,7 +47,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm,handleUpdate
           </tr>
         </thead>
         <tbody>
-          {users.slice(0, 20).map((user) => (
+          {currentUsers.map((user) => (
             <UserRow 
               key={user.id} 
               id={user.id} 
@@ -44,6 +60,11 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm,handleUpdate
           ))}
         </tbody>
       </table>
+      <Pagination 
+        users={users} 
+        currentPage={currentPage} 
+        setCurrentPage={setCurrentPage} 
+      />
     </div>
   );
 };

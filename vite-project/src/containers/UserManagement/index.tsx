@@ -9,28 +9,26 @@ import { showConfirm } from '../../store/slices/confirmSlice';
 import { RootState } from '../../store';
 import ConfirmPopupContainer from "../ConfirmPopupContainer"
 import { useFetchUsers } from '../../hooks/useFetchUsers'; 
-import Pagination from '../../component/Pagination';
 import AddUserForm from '../../component/AddUserForm';
 
-interface UserType{
-  name:string,
-  email:string,
-  role:string
-}
-interface User {
-  id: number;
+interface UserType {
   name: string;
-  email:string
+  email: string;
   role: string;
 }
+
+interface User extends UserType {
+  id: number;
+}
+
 const UserManagement: React.FC = () => {
   const dispatch = useDispatch();
   const { users, setUsers, loading, error } = useFetchUsers();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const isPopupVisible = useSelector((state: RootState) => state.confirm.showConfirm); 
   const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); 
-  const totalPages = Math.ceil(users.length / 20); 
+
+  
   
   
   const filteredUsers = users.filter(user => 
@@ -132,8 +130,8 @@ const handleShowConfirm = (id:number) => {
           <p>Error: {error.message}</p>
         ) : (
           <>
-          <UserTable handleUpdateUser={handleUpdateUser} users={filteredUsers} onShowConfirm={handleShowConfirm} currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-          <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+          <UserTable handleUpdateUser={handleUpdateUser} users={filteredUsers} onShowConfirm={handleShowConfirm}  />
+         
         </>
         )}
         

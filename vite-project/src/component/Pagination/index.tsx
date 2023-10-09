@@ -1,43 +1,37 @@
+import React from 'react';
 
-import React, { FC } from 'react';
-
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  setCurrentPage: (page: number) => void;
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
 }
 
-const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, setCurrentPage }) => {
-  return (
-    <div className="flex justify-center items-center my-4">
-      {/* Button for previous page */}
-      <button
-        className="mx-1 px-3 py-2 border rounded-lg text-sm"
-        disabled={currentPage === 1}
-        onClick={() => setCurrentPage(currentPage - 1)}
-      >
-        Trước
-      </button>
+interface PaginationProps {
+  users: User[];
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
 
-      {/* Buttons for individual pages */}
-      {[...Array(totalPages).keys()].map((page, index) => (
+const Pagination: React.FC<PaginationProps> = ({ users, currentPage, setCurrentPage }) => {
+  const itemsPerPage = 5;
+  const pageNumbers = [];
+  
+  for (let i = 1; i <= Math.ceil(users.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <div className="flex mt-4 justify-center">
+      {pageNumbers.map((number) => (
         <button
-          key={index}
-          className={`mx-1 px-3 py-2 border rounded-lg text-sm ${currentPage === page + 1 ? 'bg-blue-500 text-white' : ''}`}
-          onClick={() => setCurrentPage(page + 1)}
+          key={number}
+          onClick={() => setCurrentPage(number)}
+          className={`px-4 py-2 mx-1 ${currentPage === number ? "bg-blue-500 text-white" : "bg-white text-black border"}`}
         >
-          {page + 1}
+          {number}
         </button>
       ))}
-
-     {/* button next page*/}
-      <button
-        className="mx-1 px-3 py-2 border rounded-lg text-sm"
-        disabled={currentPage === totalPages}
-        onClick={() => setCurrentPage(currentPage + 1)}
-      >
-        Sau
-      </button>
     </div>
   );
 };
