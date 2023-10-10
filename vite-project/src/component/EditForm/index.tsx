@@ -22,7 +22,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser, clo
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitting:", updatedUser); // Log before submitting
+    console.log("Submitting:", updatedUser); 
     handleUpdateUser(updatedUser);
     closeEditForm();
   };
@@ -38,7 +38,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser, clo
           type="text"
           value={updatedUser.name}
           onChange={(e) => {
-            console.log("Before updating name:", updatedUser.name); // Log before updating
+            console.log("Before updating name:", updatedUser.name); 
             setUpdatedUser({ ...updatedUser, name: e.target.value });
           }}
           className="p-2 border rounded"
@@ -53,7 +53,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser, clo
           type="email"
           value={updatedUser.email}
           onChange={(e) => {
-            console.log("Before updating email:", updatedUser.email); // Log before updating
+            console.log("Before updating email:", updatedUser.email); 
             setUpdatedUser({ ...updatedUser, email: e.target.value });
           }}
           className="p-2 border rounded"
@@ -67,7 +67,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser, clo
           id="role"
           value={updatedUser.role}
           onChange={(e) => {
-            console.log("Before updating role:", updatedUser.role); // Log before updating
+            console.log("Before updating role:", updatedUser.role); 
             setUpdatedUser({ ...updatedUser, role: e.target.value });
           }}
           className="p-2 border rounded"

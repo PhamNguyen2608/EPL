@@ -20,7 +20,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm, handleUpdat
   const itemsPerPage = 5;
 
   useEffect(() => {
-    // Kiểm tra số lượng user trên trang hiện tại
+    
     const indexOfLastUser = currentPage * itemsPerPage;
     const indexOfFirstUser = indexOfLastUser - itemsPerPage;
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);

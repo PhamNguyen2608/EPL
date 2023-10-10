@@ -22,11 +22,11 @@ export const useFetchUsers = () => {
         const data = await fetchUsers();
         setUsers(data);
       } catch (error) {
-        if (error instanceof Error) { // Kiểm tra kiểu dữ liệu
+        if (error instanceof Error) { 
           setError(error);
         }
       } finally {
-        setLoading(false); // setLoading(false) được gọi
+        setLoading(false); 
       }
     };
 

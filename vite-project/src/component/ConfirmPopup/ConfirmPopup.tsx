@@ -5,6 +5,8 @@ interface ConfirmPopupProps {
   isPopupVisible: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  loading:boolean;
+  error:Error | null
 }
 
 const ConfirmPopup: React.FC<ConfirmPopupProps> = ({ isPopupVisible, onClose, onConfirm }) => {

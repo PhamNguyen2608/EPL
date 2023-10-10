@@ -24,6 +24,7 @@ interface User extends UserType {
 const UserManagement: React.FC = () => {
   const dispatch = useDispatch();
   const { users, setUsers, loading, error } = useFetchUsers();
+  console.log('users: ', users);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const isPopupVisible = useSelector((state: RootState) => state.confirm.showConfirm); 
   const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
@@ -31,10 +32,12 @@ const UserManagement: React.FC = () => {
   
   
   
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredUsers = users.filter(user => 
+  //   user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+
   const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
 
 const handleShowConfirm = (id:number) => {
@@ -45,7 +48,7 @@ const handleShowConfirm = (id:number) => {
 
 
   const handleAddNewUser = (newUser: UserType) => {
-    const newUserWithId: User = { id: users.length + 1, ...newUser }; // Tạo ID mới cho user
+    const newUserWithId: User = { id: users.length + 1, ...newUser }; 
     setUsers([...users, newUserWithId]);
   }
   
@@ -130,7 +133,7 @@ const handleShowConfirm = (id:number) => {
           <p>Error: {error.message}</p>
         ) : (
           <>
-          <UserTable handleUpdateUser={handleUpdateUser} users={filteredUsers} onShowConfirm={handleShowConfirm}  />
+          <UserTable handleUpdateUser={handleUpdateUser} users={users} onShowConfirm={handleShowConfirm}  />
          
         </>
         )}
