@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 interface EditUserFormProps {
   user: User;
-  handleUpdateUser: (updatedUser: User) => void;
   closeEditForm: () => void;
 }
 
@@ -13,7 +12,7 @@ interface User {
   role: string;
 }
 
-const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser, closeEditForm }) => {
+const EditUserForm: React.FC<EditUserFormProps> = ({ user, closeEditForm }) => {
   const [updatedUser, setUpdatedUser] = useState<User>(user);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, handleUpdateUser, clo
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Submitting:", updatedUser); 
-    handleUpdateUser(updatedUser);
     closeEditForm();
   };
 

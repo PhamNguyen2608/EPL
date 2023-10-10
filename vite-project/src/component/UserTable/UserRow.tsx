@@ -7,7 +7,6 @@ interface UserRowProps {
   email: string;
   role: string;
   onShowConfirm: (id: number) => void;
-  handleUpdateUser: (updatedUser: User) => void;
 }
 
 interface User {
@@ -17,7 +16,7 @@ interface User {
   role: string;
 }
 
-const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm, handleUpdateUser }) => {
+const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm }) => {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   const toggleEditForm = () => {
@@ -45,7 +44,7 @@ const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm,
           <div className="absolute inset-0 bg-black opacity-50 z-40"></div>
           <div className="bg-white p-4 rounded z-50 relative">
             <button className="text-red-500 hover:underline absolute top-0 right-0 mt-2 mr-2" onClick={toggleEditForm}>X</button>
-            <EditUserForm user={user} handleUpdateUser={handleUpdateUser} closeEditForm={closeEditForm} />
+            <EditUserForm user={user}  closeEditForm={closeEditForm} />
           </div>
         </div>
       )}

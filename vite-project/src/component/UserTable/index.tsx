@@ -12,10 +12,10 @@ interface User {
 interface UserTableProps {
   users: User[];
   onShowConfirm: (id: number) => void;
-  handleUpdateUser: (updatedUser: User) => void;
+ 
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm, handleUpdateUser }) => {
+const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -55,7 +55,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm, handleUpdat
               email={user.email} 
               role={user.role} 
               onShowConfirm={onShowConfirm}
-              handleUpdateUser={handleUpdateUser}
+              
             />
           ))}
         </tbody>
