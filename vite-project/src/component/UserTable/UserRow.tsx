@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import EditUserForm from '../EditForm';
-
+import { User } from '../../types/userTypes';
 interface UserRowProps {
   id: number;
   name: string;
@@ -9,12 +9,6 @@ interface UserRowProps {
   onShowConfirm: (id: number) => void;
 }
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
 
 const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm }) => {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
@@ -25,7 +19,7 @@ const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm 
     const closeEditForm = () => {
       setIsEditFormVisible(false);
     };
-  const user: User = { id, name, email, role };
+  const user: User = { id, name, email,role };
 
   return (
     <>

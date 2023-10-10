@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import { User } from "../../types/userTypes";
 interface EditUserFormProps {
   user: User;
   closeEditForm: () => void;
 }
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
+
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ user, closeEditForm }) => {
   const [updatedUser, setUpdatedUser] = useState<User>(user);

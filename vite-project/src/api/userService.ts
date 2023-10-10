@@ -1,24 +1,33 @@
 
 import axios from 'axios';
+import { User } from '../types/userTypes';
 
-interface User{
-  id: number;
-  name: string;
-  email: string;
-}
+
+
 const apiClient = axios.create({
-
-  baseURL: 'https://jsonplaceholder.org', 
+  baseURL: 'https://jsonplaceholder.org',
   headers: {
     'Content-Type': 'application/json',
   },
 });
-console.log('apiClient: ', apiClient);
+
 export const fetchUsers = async () => {
+  try {
     const response = await apiClient.get('/users');
-    return response.data;
-  };
-  
+    const transformedData = response.data.map((apiData: any) => ({
+      id: apiData.id,
+      name: `${apiData.firstname} ${apiData.lastname}`,
+      email: apiData.email,
+
+    }));
+    return transformedData;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+};
+
+
 
 
 export const deleteUser = async (id:number) =>{

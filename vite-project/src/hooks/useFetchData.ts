@@ -1,37 +1,28 @@
-// useFetchData.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-interface FetchState<T> {
-  data: T | null;
-  loading: boolean;
-  error: Error | null;
-  setData: React.Dispatch<React.SetStateAction<T | null>>;
-}
-
-const useFetchData = <T,>(fetchFunction: () => Promise<T>): FetchState<T> => {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
+export const useFetchData = <T>(apiCall: () => Promise<T>, initialData: T, shouldFetch = true) => {
+  const [data, setData] = useState<T>(initialData);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const fetchData = useCallback(async () => {
+    if (!shouldFetch) return;
+
+    setLoading(true);
+    try {
+      const result = await apiCall();
+      setData(result);
+      setError(null);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setLoading(false);
+    }
+  }, [apiCall, shouldFetch]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const fetchedData = await fetchFunction();
-        setData(fetchedData);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
-  }, [fetchFunction]);
+  }, [fetchData]);
 
-  return { data, loading, error, setData };
+  return { data, setData, loading, error };
 };
-
-export default useFetchData;

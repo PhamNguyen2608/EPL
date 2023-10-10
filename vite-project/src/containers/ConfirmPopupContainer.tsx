@@ -5,13 +5,7 @@ import ConfirmPopup from '../component/ConfirmPopup/ConfirmPopup';
 import { RootState } from '../store'; 
 import { deleteUser } from '../api/userService';
 import useDeleteData from '../hooks/useDelete';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
+import { User } from '../types/userTypes';
 
 interface ConfirmPopupContainerProps {
   userIdToDelete: number | null;

@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UserRow from './UserRow'; // Import UserRow component
 import Pagination from '../Pagination';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
+import { User } from '../../types/userTypes';
 
 interface UserTableProps {
   users: User[];
@@ -53,7 +47,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm }) => {
               id={user.id} 
               name={user.name} 
               email={user.email} 
-              role={user.role} 
+              role={user.role}
               onShowConfirm={onShowConfirm}
               
             />

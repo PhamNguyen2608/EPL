@@ -8,7 +8,7 @@ interface FormData {
 
 interface AddUserFormProps {
     handleToggleAddUserForm: () => void;
-    handleAddNewUser: (newUser: FormData) => void;  // Thêm kiểu dữ liệu cho newUser
+    
   
   }
 
