@@ -2,9 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../types/userTypes";
 import { fetchUsers } from "../../api/userService";
 
-
-
-
 interface UserState {
   users: User[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';

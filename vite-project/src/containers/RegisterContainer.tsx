@@ -4,7 +4,7 @@ import { RegisterFormValues } from '../types/RegisterTypes';
 
 const RegisterContainer: FC = () => {
   const handleSubmit = (values: RegisterFormValues) => {
-    // Xử lý logic đăng ký ở đây
+   
     console.log(values);
   };
 
