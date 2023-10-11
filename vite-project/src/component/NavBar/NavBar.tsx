@@ -3,7 +3,7 @@ import Logo from '../Logo/Logo';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log("re-render navbar")
   return (
     <nav className="bg-blue-500 p-4 fixed top-0 left-0 w-full z-50">
       <div className="flex items-center justify-between">

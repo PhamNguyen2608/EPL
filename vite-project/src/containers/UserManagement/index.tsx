@@ -9,17 +9,23 @@ import Sidebar from '../../component/NavBar/Sidebar';
 import SidebarButton from '../../component/Button/SideBarButton';
 import ConfirmPopupContainer from "../ConfirmPopupContainer";
 import AddUserForm from '../../component/AddUserForm';
-import { useFetchData } from '../../hooks/useFetchData';
-import { fetchUsers } from '../../api/userService';
+import  useFetchData  from '../../hooks/useFetchData';
+
+
+
 
 const UserManagement: React.FC = () => {
   const dispatch = useDispatch();
-  const { data: users, loading, error } = useFetchData(fetchUsers, []);
   const isPopupVisible = useSelector((state: RootState) => state.confirm.showConfirm, shallowEqual);
-  
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
+  const { users  } = useFetchData();
+  // console.log('users: ', users);
+
+ 
+  
+
 
   const handleShowConfirm = useCallback((id: number) => {
     setUserIdToDelete(id);
@@ -43,9 +49,10 @@ const UserManagement: React.FC = () => {
           </div>
           {isAddUserFormVisible && <div className="w-3/4 mt-4"><AddUserForm handleToggleAddUserForm={handleAddUser} /></div>}
           <div className="w-3/4 mt-4">
-            {loading ? <p>Loading...</p> : error ? <p>Error: {error.message}</p> : <UserTable users={users} onShowConfirm={handleShowConfirm} />}
+             <UserTable users={users} onShowConfirm={handleShowConfirm} />
           </div>
-          {isPopupVisible && <ConfirmPopupContainer userIdToDelete={userIdToDelete} users={users} />}
+
+          {isPopupVisible && <ConfirmPopupContainer userIdToDelete={userIdToDelete} />}
         </div>
       </div>
     </div>

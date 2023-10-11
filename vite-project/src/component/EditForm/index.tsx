@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { User } from "../../types/userTypes";
+import useUpdateData from "../../hooks/useUpdate";
+import { useDispatch } from "react-redux";
+import { updateUser as updateUserApi } from "../../api/userService";
+import { updateUser as updateUserAction } from "../../store/slices/userSlice";
 interface EditUserFormProps {
   user: User;
   closeEditForm: () => void;
@@ -9,16 +13,28 @@ interface EditUserFormProps {
 
 const EditUserForm: React.FC<EditUserFormProps> = ({ user, closeEditForm }) => {
   const [updatedUser, setUpdatedUser] = useState<User>(user);
+  const { data, loading, error, handleUpdate } = useUpdateData<User>(updateUserApi);
+  const dispatch = useDispatch(); 
 
   useEffect(() => {
-    console.log("Current state of updatedUser:", updatedUser);
-  }, [updatedUser]);
+    if (data) {
+      console.log("User updated:", data);
+      dispatch(updateUserAction(data)); 
+      closeEditForm();
+    }
+  }, [data, closeEditForm, dispatch]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (error) {
+      console.log("Error updating user:", error);
+    }
+  }, [error]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitting:", updatedUser); 
-    closeEditForm();
+    await handleUpdate(user.id, updatedUser);
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -29,10 +45,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, closeEditForm }) => {
         <input
           id="name"
           type="text"
-          value={updatedUser.name}
+          value={updatedUser.firstname}
           onChange={(e) => {
-            console.log("Before updating name:", updatedUser.name); 
-            setUpdatedUser({ ...updatedUser, name: e.target.value });
+            console.log("Before updating name:", updatedUser.firstname); 
+            setUpdatedUser({ ...updatedUser, firstname: e.target.value });
           }}
           className="p-2 border rounded"
         />
@@ -70,8 +86,9 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ user, closeEditForm }) => {
           <option value="guest">Guest</option>
         </select>
       </div>
-      <button type="submit" className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-        Update User
+     
+      <button type="submit" className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600" disabled={loading}>
+        {loading ? "Updating..." : "Update User"}
       </button>
     </form>
   );

@@ -4,13 +4,15 @@ import { User } from '../../types/userTypes';
 interface UserRowProps {
   id: number;
   name: string;
+  firstname: string;
+  lastname:string;
   email: string;
   role: string;
   onShowConfirm: (id: number) => void;
 }
 
 
-const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm }) => {
+const UserRow: React.FC<UserRowProps> = ({ id, firstname,lastname, email, role,name, onShowConfirm }) => {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   const toggleEditForm = () => {
@@ -19,13 +21,13 @@ const UserRow: React.FC<UserRowProps> = ({ id, name, email, role, onShowConfirm 
     const closeEditForm = () => {
       setIsEditFormVisible(false);
     };
-  const user: User = { id, name, email,role };
+  const user: User = { id, firstname,lastname, email,role,name };
 
   return (
     <>
       <tr>
         <td className="py-2 px-3 border-b border-gray-200">{id}</td>
-        <td className="py-2 px-3 border-b border-gray-200">{name}</td>
+        <td className="py-2 px-3 border-b border-gray-200">{firstname}</td>
         <td className="py-2 px-3 border-b border-gray-200">{email}</td>
         <td className="py-2 px-3 border-b border-gray-200">{role}</td>
         <td className="py-2 px-3 border-b border-gray-200">

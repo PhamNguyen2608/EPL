@@ -1,22 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "../../types/userTypes";
+import { fetchUsers } from "../../api/userService";
 
-interface User {
-  id: number;
-  name: string;
-  role: string
-}
+
+
 
 interface UserState {
   users: User[];
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
 }
 
 const initialState: UserState = {
-  users: []
+  users: [],
+  status: 'idle',
+  error: null
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
+  
   reducers: {
     addUser: (state, action: PayloadAction<User>) => {
       state.users.push(action.payload);
@@ -33,7 +37,22 @@ const userSlice = createSlice({
         state.users.splice(index, 1);
       }
     }
-  }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUsers.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.users = action.payload;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message as string | null;
+
+      });
+  },
 });
 
 export const { addUser, updateUser, deleteUser } = userSlice.actions;

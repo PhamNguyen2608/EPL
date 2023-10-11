@@ -1,4 +1,4 @@
-// useDeleteData.ts
+
 import { useState, useCallback } from 'react';
 
 const useDeleteData = <T,>(deleteFunction: (id: number | string) => Promise<T>) => {

@@ -27,6 +27,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm }) => {
   const indexOfLastUser = currentPage * itemsPerPage;
   const indexOfFirstUser = indexOfLastUser - itemsPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  console.log('currentUsers: ', currentUsers);
 
   return (
     <div className="overflow-auto h-[500px] w-[800px] rounded-lg shadow-lg bg-white">
@@ -45,7 +46,9 @@ const UserTable: React.FC<UserTableProps> = ({ users, onShowConfirm }) => {
             <UserRow 
               key={user.id} 
               id={user.id} 
-              name={user.name} 
+              name={user.firstname} 
+              firstname={user.firstname}
+              lastname={user.lastname}
               email={user.email} 
               role={user.role}
               onShowConfirm={onShowConfirm}
