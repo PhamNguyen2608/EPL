@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../../store/slices/userSlice';
 import { RootState } from '../../store';
 import { User } from '../../types/userTypes';
-
+import useAddData from '../../hooks/useAdd';
+import {addUser as addUserAPI } from '../../api/userService'
 interface FormData {
   firstname: string;
   email: string;
@@ -25,6 +26,8 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ handleToggleAddUserForm }) =>
 
   const users = useSelector((state: RootState) => state.user.users);
 
+  const { loading, error, isAdded, addedData, handleAdd } = useAddData<User>(addUserAPI);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -33,22 +36,31 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ handleToggleAddUserForm }) =>
     });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const newId = users.length ? Math.max(...users.map(u => u.id)) + 1 : 1;
 
     const newUser: User = {
-      name:'',
       id: newId,
       firstname: formData.firstname,
-      lastname: '',  // add a default value or update your form to include this field
+      lastname: '',
       email: formData.email,
-      role: formData.role
+      role: formData.role,
+      name: ''
     };
 
-    dispatch(addUser(newUser));
-    console.log('User added successfully');
-    handleToggleAddUserForm();
+    await handleAdd(newUser);
+
+    if (isAdded && addedData) {
+      dispatch(addUser(addedData));
+      handleToggleAddUserForm();
+    }
+
+    if (error) {
+      console.log("error",error)
+      // Handle error appropriately, maybe display it on the UI.
+    }
   };
 
   return (
@@ -92,9 +104,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ handleToggleAddUserForm }) =>
               <option value="user">User</option>
             </select>
           </div>
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-            Add
-          </button>
+          <button type="submit" className="bg-blue-500 text-white p-2 rounded" disabled={loading}>
+  {loading ? 'Adding...' : 'Add'}
+</button>
+
           <button type="button" onClick={handleToggleAddUserForm} className="ml-4 bg-red-500 text-white p-2 rounded">
             Cancel
           </button>
