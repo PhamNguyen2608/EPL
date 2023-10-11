@@ -3,6 +3,7 @@ import useAddData from '../../hooks/useAdd';
 import { addUser } from '../../api/userService';
 
 interface FormData {
+
   firstname: string;
   email: string;
   role: string;
