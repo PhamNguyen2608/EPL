@@ -6,20 +6,23 @@ const useAddData = <T,>(addFunction: (data: T) => Promise<T>) => {
   const [isAdded, setIsAdded] = useState(false);
   const [addedData, setAddedData] = useState<T | null>(null);
 
-  const handleAdd = useCallback(async (data: T) => {
-    setLoading(true);
-    try {
-      const result = await addFunction(data);
-      setAddedData(result);
-      setIsAdded(true);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err);
-      }
-    } finally {
-      setLoading(false);
+
+const handleAdd = useCallback(async (data: T, onSuccess: (addedData: T) => void) => {
+  setLoading(true);
+  try {
+    const result = await addFunction(data);
+    setAddedData(result);
+    setIsAdded(true);
+    onSuccess(result);
+  } catch (err) {
+    if (err instanceof Error) {
+      setError(err);
     }
-  }, [addFunction]);
+  } finally {
+    setLoading(false);
+  }
+}, [addFunction]);
+
 
   return { loading, error, isAdded, addedData, handleAdd };
 };

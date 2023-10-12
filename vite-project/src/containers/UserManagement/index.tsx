@@ -10,6 +10,7 @@ import SidebarButton from '../../component/Button/SideBarButton';
 import ConfirmPopupContainer from "../ConfirmPopupContainer";
 import AddUserForm from '../../component/AddUserForm';
 import  useFetchData  from '../../hooks/useFetchData';
+import _ from 'lodash';
 
 
 
@@ -23,7 +24,12 @@ const UserManagement: React.FC = () => {
   const { users  } = useFetchData();
   // console.log('users: ', users);
 
- 
+  const filteredUsers = _.filter(users, (user) => {
+    return (
+      _.includes(_.toLower(user.email), _.toLower(searchTerm)) ||
+      _.includes(_.toLower(user.name), _.toLower(searchTerm))
+    );
+  });
   
 
 
@@ -49,7 +55,7 @@ const UserManagement: React.FC = () => {
           </div>
           {isAddUserFormVisible && <div className="w-3/4 mt-4"><AddUserForm handleToggleAddUserForm={handleAddUser} /></div>}
           <div className="w-3/4 mt-4">
-             <UserTable users={users} onShowConfirm={handleShowConfirm} />
+             <UserTable users={filteredUsers} onShowConfirm={handleShowConfirm} />
           </div>
 
           {isPopupVisible && <ConfirmPopupContainer userIdToDelete={userIdToDelete} />}
