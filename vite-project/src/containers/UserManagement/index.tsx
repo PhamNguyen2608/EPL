@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { showConfirm } from '../../store/slices/confirmSlice'; 
 import { RootState } from '../../store';
@@ -11,7 +11,7 @@ import ConfirmPopupContainer from "../ConfirmPopupContainer";
 import AddUserForm from '../../component/AddUserForm';
 import  useFetchData  from '../../hooks/useFetchData';
 import _ from 'lodash';
-
+import useDebounce from '../../hooks/useDebounce';
 
 
 
@@ -19,15 +19,20 @@ const UserManagement: React.FC = () => {
   const dispatch = useDispatch();
   const isPopupVisible = useSelector((state: RootState) => state.confirm.showConfirm, shallowEqual);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  
   const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
   const { users  } = useFetchData();
   // console.log('users: ', users);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+  useEffect(() => {
+    console.log("Debounced search term is: ", debouncedSearchTerm); 
+  }, [debouncedSearchTerm]);
   const filteredUsers = _.filter(users, (user) => {
     return (
-      _.includes(_.toLower(user.email), _.toLower(searchTerm)) ||
-      _.includes(_.toLower(user.name), _.toLower(searchTerm))
+      _.includes(_.toLower(user.email), _.toLower(debouncedSearchTerm)) || 
+      _.includes(_.toLower(user.name), _.toLower(debouncedSearchTerm))  
     );
   });
   
