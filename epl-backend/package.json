@@ -1,0 +1,16 @@
+{
+  "name": "epl-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nguyen",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mssql": "^10.0.1",
+    "tedious": "^16.4.1"
+  }
+}

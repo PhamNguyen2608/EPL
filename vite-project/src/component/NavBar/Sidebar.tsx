@@ -1,35 +1,19 @@
 import React from 'react';
-import 'font-awesome/css/font-awesome.min.css';
+import SideItem from './SideItem'; // Đảm bảo đường dẫn đúng
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  items: { label: string; path: string; icon: string }[];
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ items }) => {
   return (
-    <div className=" text-white h-full p-4" style={{backgroundColor:"#3F1052"}}>
-      {/* Logo or Brand Name */}
-      <div className="mb-8 flex justify-center items-center">
-        <i className="fa fa-cogs text-3xl"></i>
-        <span className="text-2xl ml-2">EPL</span>
-      </div>
-
-      {/* Menu Items */}
-      <ul className="space-y-4">
-        {/* User Management */}
-        <li className="flex items-center hover:bg-gray-700 p-2 rounded">
-          <i className="fa fa-user mr-2"></i>
-          <span>User Management</span>
-        </li>
-
-        {/* Other Menu Items */}
-        <li className="flex items-center hover:bg-gray-700 p-2 rounded">
-          <i className="fa fa-cog mr-2"></i>
-          <span>Settings</span>
-        </li>
-        <li className="flex items-center hover:bg-gray-700 p-2 rounded">
-          <i className="fa fa-envelope mr-2"></i>
-          <span>Messages</span>
-        </li>
-        
+    <nav style={{ backgroundColor: '#37003C' }} className="h-screen w-1/6 fixed top-0 left-0 overflow-y-auto pt-10 mt-10">
+      <ul className="space-y-2 py-4 pr-4">
+        {items.map((item, index) => (
+          <SideItem key={index} label={item.label} path={item.path} icon={item.icon} />
+        ))}
       </ul>
-    </div>
+    </nav>
   );
 };
 

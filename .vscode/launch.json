@@ -22,7 +22,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:5173/user",
+            "url": "http://localhost:8000/users",
             "webRoot": "${workspaceFolder}/vite-project/src"
         }
     ]
