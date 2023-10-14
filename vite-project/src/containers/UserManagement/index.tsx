@@ -5,7 +5,7 @@ import { RootState } from '../../store';
 import UserTable from '../../component/UserTable';
 import SearchBar from '../../component/SearchBar';
 import Navbar from '../../component/NavBar/NavBar';
-import Sidebar from '../../component/NavBar/SideBar';
+import Sidebar from '../../component/NavBar/Sidebar';
 import SidebarButton from '../../component/Button/SideBarButton';
 import ConfirmPopupContainer from "../ConfirmPopupContainer";
 import AddUserForm from '../../component/AddUserForm';
