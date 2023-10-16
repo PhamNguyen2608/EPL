@@ -27,7 +27,7 @@ const UserRow: React.FC<UserRowProps> = ({ id, firstname,lastname, email, role,n
     <>
       <tr>
         <td className="py-2 px-3 border-b border-gray-200">{id}</td>
-        <td className="py-2 px-3 border-b border-gray-200">{firstname}</td>
+        <td className="py-2 px-3 border-b border-gray-200">{name}</td>
         <td className="py-2 px-3 border-b border-gray-200">{email}</td>
         <td className="py-2 px-3 border-b border-gray-200">{role}</td>
         <td className="py-2 px-3 border-b border-gray-200">
