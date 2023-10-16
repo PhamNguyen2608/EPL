@@ -6,8 +6,8 @@ const getUserList = async (req, res) => {
   const limit = parseInt(req.query.limit) || DEFAULT_LIMIT;
   const page = parseInt(req.query.page) || 1;
   const offset = (page - 1) * limit;
-
-  const { users, total } = await getUsers(limit, offset);
+console.log('=========', req);
+  const { users, total } = await getUsers(limit, offset, req.query?.keyword, req.query?.strSort);
 
   const hasNext = offset + limit < total;
   const hasPrevious = offset !== 0;
