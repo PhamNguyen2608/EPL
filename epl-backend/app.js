@@ -1,71 +1,47 @@
 const express = require('express');
-const { Connection, Request } = require('tedious');
+const mysql = require('mysql');
 
 const app = express();
-const config = {
-  server: 'ADMIN', 
-  authentication: {
-    type: 'default',
-    options: {
-      userName: 'Admin', 
-      password: '' 
-    }
-  },
-  options: {
+const port = 3000;
 
-    encrypt: true,
-    database: 'EplDB' 
-  }
-};
-
-let isConnected = false;
-const connection = new Connection(config);
-
-connection.on('connect', function(err) {
-  if (err) {
-    console.error('Error connecting: ' + err.message);
-    isConnected = false;
-  } else {
-    console.log('Connected to SQL Server successfully');
-    isConnected = true;
-  }
+// Khởi tạo kết nối MySQL
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '2608nguyen',
+  database: 'EplDB'
 });
 
-function executeSQL(callback) {
-  const request = new Request("SELECT * FROM users", function(err, rowCount) {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, rowCount + ' rows returned');
-    }
-  });
-  connection.execSql(request);
-}
+db.connect((err) => {
+  if (err) throw err;
+  console.log('Connected to the database');
+});
+
 
 app.get('/users', (req, res) => {
-  if (isConnected) {
-    executeSQL((err, data) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.json({ data: data });
+  const limit = parseInt(req.query.limit) || 10; 
+  const cursor = parseInt(req.query.cursor); 
+
+  let query = 'SELECT * FROM `users` WHERE `id` > ? LIMIT ?';
+  
+  db.query(query, [cursor || 0, limit], (err, results) => {
+    if (err) {
+      console.error('Lỗi khi truy vấn:', err);
+      res.status(500).json({ error: 'Database query error' });
+      return;
+    }
+
+    const nextCursor = results.length > 0 ? results[results.length - 1].id : null;
+
+    res.json({
+      data: results,
+      meta: {
+        nextCursor
       }
     });
-  } else {
-    res.status(500).json({ error: 'Not connected to SQL Server' });
-  }
+  });
 });
 
-const PORT = 8000;
-
-// Kết nối đến SQL Server trước khi bắt đầu lắng nghe
-connection.connect(err => {
-  if (err) {
-    console.error('Could not start server because SQL connection failed', err);
-    process.exit(1);
-  } else {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  }
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
